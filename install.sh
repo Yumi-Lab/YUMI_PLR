@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# Check if the script is executed with sudo and determine the real user
-if [ ! -z "$SUDO_USER" ]; then
-    REAL_USER="$SUDO_USER"
-else
-    REAL_USER="$(whoami)"
-fi
-echo "Real user: $REAL_USER"
+# Récupérer l'utilisateur qui exécute le script
+REAL_USER="$USER"
 
-# Use getent to get the path to the real user's home directory
-USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+# Récupérer le répertoire de l'utilisateur
+USER_HOME="$HOME"
+
+echo "Real user: $REAL_USER"
 echo "User's home directory: $USER_HOME"
 
 # Define the Klipper directory using USER_HOME instead of HOME
@@ -21,9 +18,9 @@ PROJECT_DIR="$PWD"
 echo "Project directory: $PROJECT_DIR"
 
 # Define the cleanup function
-function cleanup {
-  
-}
+#function cleanup {
+#  
+#}
 
 # Check if the script was called with the "remove" argument
 if [ "$1" == "remove" ]; then
@@ -36,16 +33,13 @@ else
   fi
 
   # Copy the project files to the Klipper directory
-  cp $PROJECT_DIR/plr.cfg $USER_HOME/printer_data/config/ && echo "plr.cfg copied successfully." || echo "Error copying plr.cfg."
+  cp -f $PROJECT_DIR/plr.cfg $USER_HOME/printer_data/config/ && echo "plr.cfg copied successfully." || echo "Error copying plr.cfg."
+  cp -f $PROJECT_DIR/gcode_shell_command.py $KLIPPER_DIR/klippy/extras/ && echo "gcode_shell_command.py copied successfully." || echo "Error copying gcode_shell_command.py."
   # Use rsync to copy, overwriting existing files and create the folder if it does not exist
-  rsync -av "$PROJECT_DIR/plr.sh" "$USER_HOME/printer_data/plr/" && echo "plr.sh copied successfully." || echo "Error copying plr.sh."
-  # Use rsync to copy, overwriting existing files
-  rsync -av "$PROJECT_DIR/clear_plr.sh" "$USER_HOME/printer_data/plr/" && echo "clear_plr.sh copied successfully." || echo "Error copying clear_plr.sh."
-  cp $PROJECT_DIR/gcode_shell_command.py $KLIPPER_DIR/klippy/extras/ && echo "gcode_shell_command.py copied successfully." || echo "Error copying gcode_shell_command.py."
-
+  
   # Make plr.sh & clear_plr.sh executable
-  chmod +x $USER_HOME/printer_data/plr/plr.sh && echo "plr.sh made executable." || echo "Error making plr.sh executable."
-  chmod +x $USER_HOME/printer_data/plr/clear_plr.sh && echo "clear_plr.sh made executable." || echo "Error making clear_plr.sh executable."
+  #chmod +x $USER_HOME/printer_data/plr/plr.sh && echo "plr.sh made executable." || echo "Error making plr.sh executable."
+  #chmod +x $USER_HOME/printer_data/plr/clear_plr.sh && echo "clear_plr.sh made executable." || echo "Error making clear_plr.sh executable."
 
   # Check if printer.cfg exists, create it if it doesn't
   if [ ! -f $USER_HOME/printer_data/config/printer.cfg ]; then
@@ -138,7 +132,7 @@ is_system_service: False
 EOF
 
   # Change permissions so the "pi" user retains rights on the files created or modified
-  chown -R $REAL_USER:$REAL_USER $USER_HOME/printer_data/config/
+  #chown -R $REAL_USER:$REAL_USER $USER_HOME/printer_data/config/
 
   # Print a message to the user
   echo "Installation complete"
