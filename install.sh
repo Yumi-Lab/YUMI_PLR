@@ -58,7 +58,7 @@ else
   fi
 
   # Check if the string is already present in the file
-  if grep -q '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
+  if grep -Fxq '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
       echo "The string [include plr.cfg] is already present in the file."
   else
       # Create a temporary file
@@ -72,7 +72,7 @@ else
       mv "$temp_file" $USER_HOME/printer_data/config/printer.cfg
 
       # Check if the string was added successfully
-      if grep -Fxq '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
+      if grep -q '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
           echo "The string [include plr.cfg] was successfully added."
       else
           echo "Error: the string [include plr.cfg] was not added."
@@ -131,7 +131,7 @@ else
 type: git_repo
 path: ~/YUMI_PLR
 origin: https://github.com/Yumi-Lab/YUMI_PLR.git
-primary_branch: master
+primary_branch: main
 install_script: install.sh
 is_system_service: False
 
