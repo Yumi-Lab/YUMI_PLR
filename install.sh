@@ -22,7 +22,8 @@ echo "Project directory: $PROJECT_DIR"
 
 # Define the cleanup function
 function cleanup {
-  
+    # This function is currently empty
+    # You can add cleanup code here if necessary
 }
 
 # Check if the script was called with the "remove" argument
