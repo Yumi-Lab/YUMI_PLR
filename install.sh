@@ -22,18 +22,7 @@ echo "Project directory: $PROJECT_DIR"
 
 # Define the cleanup function
 function cleanup {
-  # Remove the project files from the Klipper directory
-  rm $KLIPPER_DIR/klippy/extras/gcode_shell_command.py && echo "gcode_shell_command.py removed successfully." || echo "Error removing gcode_shell_command.py."
-  rm $USER_HOME/printer_data/plr/plr.cfg && echo "plr.cfg removed successfully." || echo "Error removing plr.cfg."
-  rm $USER_HOME/printer_data/plr/clear_plr.cfg && echo "clear_plr.cfg removed successfully." || echo "Error removing clear_plr.cfg."  
-
-  # Remove the [include] directive from the printer.cfg file, if it exists
-  if grep -q "[include plr.cfg]" $USER_HOME/printer_data/config/printer.cfg; then
-    sed -i '/\[include plr.cfg\]/d' $USER_HOME/printer_data/config/printer.cfg && echo "[include plr.cfg] directive removed from printer.cfg." || echo "Error removing [include plr.cfg] directive from printer.cfg."
-  fi
-
-  # Remove the plr-klipper directory
-  rm -r $PROJECT_DIR && echo "plr-klipper directory removed successfully." || echo "Error removing plr-klipper directory."
+  
 }
 
 # Check if the script was called with the "remove" argument
@@ -83,7 +72,7 @@ else
       mv "$temp_file" $USER_HOME/printer_data/config/printer.cfg
 
       # Check if the string was added successfully
-      if grep -q '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
+      if grep -Fxq '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
           echo "The string [include plr.cfg] was successfully added."
       else
           echo "Error: the string [include plr.cfg] was not added."
@@ -149,7 +138,7 @@ is_system_service: False
 EOF
 
   # Change permissions so the "pi" user retains rights on the files created or modified
-  chown -R pi:pi $USER_HOME/printer_data/config/
+  chown -R $REAL_USER:$REAL_USER $USER_HOME/printer_data/config/
 
   # Print a message to the user
   echo "Installation complete"
