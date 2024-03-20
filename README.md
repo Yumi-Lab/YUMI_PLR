@@ -12,7 +12,7 @@ Vous devez obligatoirement avoir creer votre installation klipper avec l'user 'p
 ## Installation
 1. Clonez le référentiel PLR Klipper à partir de GitHub vers votre machine locale :
 ```bash
-git clone https://github.com/Yumi-Lab/plr-klipper.git
+git clone https://github.com/Yumi-Lab/YUMI_PLR.git
 cd YUMI_PLR
 chmod +x install.sh
 sudo ./install.sh
