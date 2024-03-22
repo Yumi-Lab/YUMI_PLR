@@ -3,17 +3,29 @@
 # Récupérer l'utilisateur qui exécute le script
 REAL_USER="$USER"
 
+# Initialisation de la variable OWNER
+OWNER=""
+
 # Récupérer le répertoire de l'utilisateur
 if [ -n "$SUDO_USER" ]; then
-    USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
     echo "shell script execute by with sudo :  user is $SUDO_USER"
+    if [ "$SUDO_USER" = "runner" ]; then
+        # Définir USER_HOME spécifiquement pour 'runner' et définir OWNER à 'pi'
+        USER_HOME="/home/pi"
+        OWNER="pi"
+    else
+        USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+        OWNER="$SUDO_USER"
+    fi
 else
     USER_HOME=$(getent passwd "$USER" | cut -d: -f6)
+    OWNER="$USER"
     echo "shell script execute without sudo : user is $USER"
 fi
 
 echo "Real user: $REAL_USER"
 echo "User's home directory: $USER_HOME"
+echo "Owner for chown: $OWNER"
 
 # Define the Klipper directory using USER_HOME instead of HOME
 KLIPPER_DIR="$USER_HOME/klipper"
@@ -145,12 +157,11 @@ if [ -n "$SUDO_USER" ]; then
     REAL_USER="$SUDO_USER"
     echo "Utilisateur réel (SUDO_USER) : $REAL_USER"
     
-    USER_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
     echo "Répertoire personnel de l'utilisateur réel (USER_HOME) : $USER_HOME"
     
-    echo "Exécution de la commande chown pour $USER_HOME/printer_data/config/"
-    # Exécuter la commande chown uniquement si le script est lancé en sudo
-    chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/printer_data/config/"
+    echo "Exécution de la commande chown pour $USER_HOME/printer_data/config/ avec $OWNER:$OWNER"
+    # Exécuter la commande chown avec les droits de l'utilisateur spécifique (pi:pi pour runner, sinon SUDO_USER)
+    chown -R "$OWNER":"$OWNER" "$USER_HOME/printer_data/config/"
     echo "Commande chown exécutée."
 else
     echo "Ce script n'est pas executé en sudo."
