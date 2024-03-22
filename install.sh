@@ -137,8 +137,24 @@ is_system_service: False
 
 EOF
 
-  # Change permissions so the "pi" user retains rights on the files created or modified
-  #chown -R $REAL_USER:$REAL_USER $USER_HOME/printer_data/config/
+# Vérifier si le script est exécuté avec sudo
+echo "Vérification de l'exécution avec sudo..."
+if [ -n "$SUDO_USER" ]; then
+    echo "Le script est exécuté avec sudo."
+    # La variable SUDO_USER est définie, donc le script est exécuté avec sudo
+    REAL_USER="$SUDO_USER"
+    echo "Utilisateur réel (SUDO_USER) : $REAL_USER"
+    
+    USER_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+    echo "Répertoire personnel de l'utilisateur réel (USER_HOME) : $USER_HOME"
+    
+    echo "Exécution de la commande chown pour $USER_HOME/printer_data/config/"
+    # Exécuter la commande chown uniquement si le script est lancé en sudo
+    chown -R "$REAL_USER":"$REAL_USER" "$USER_HOME/printer_data/config/"
+    echo "Commande chown exécutée."
+else
+    echo "Ce script n'est pas executé en sudo."
+fi
 
   # Print a message to the user
   echo "Installation complete"
