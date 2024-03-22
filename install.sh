@@ -4,7 +4,13 @@
 REAL_USER="$USER"
 
 # Récupérer le répertoire de l'utilisateur
-USER_HOME="$HOME"
+if [ -n "$SUDO_USER" ]; then
+    USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+    echo "shell script execute by with sudo :  user is $SUDO_USER"
+else
+    USER_HOME=$(getent passwd "$USER" | cut -d: -f6)
+    echo "shell script execute without sudo : user is $USER"
+fi
 
 echo "Real user: $REAL_USER"
 echo "User's home directory: $USER_HOME"
