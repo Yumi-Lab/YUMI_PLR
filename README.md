@@ -16,20 +16,20 @@ cd YUMI_PLR
 ./install.sh
 ```
 
-###start-gcode à rajouter dans votre slicer:
+###start-gcode add in your slicer:
 ```bash
 clear_plr
 save_last_file
 SAVE_VARIABLE VARIABLE=was_interrupted VALUE=True
 ```
 
-###end-gcode à rajouter dans votre slicer:
+###end-gcode add in your slicer:
 ```bash
 SAVE_VARIABLE VARIABLE=was_interrupted VALUE=False
 clear_last_file
 clear_plr
 ```
-###Before layer change G-gcode à rajouter dans votre slicer:
+###Before layer change G-gcode add in your slicer:
 ```bash
 LOG_Z
 ```
