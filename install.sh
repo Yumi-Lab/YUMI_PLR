@@ -70,7 +70,7 @@ else
   fi
 
   # Check if the string is already present in the file
-  if grep -Fq '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
+  if grep -Fxq '[include plr.cfg]' $USER_HOME/printer_data/config/printer.cfg; then
       echo "The string [include plr.cfg] is already present in the file."
   else
       # Create a temporary file
