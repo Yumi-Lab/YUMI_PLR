@@ -11,7 +11,7 @@ if [ -n "$SUDO_USER" ]; then
     echo "shell script execute by with sudo :  user is $SUDO_USER"
     if [ "$SUDO_USER" = "runner" ]; then
         # Définir USER_HOME spécifiquement pour 'runner' et définir OWNER à 'pi'
-        USER_HOME="/home/pi"
+        USER_HOME="$HOME"
         OWNER="pi"
     else
         USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)

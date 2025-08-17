@@ -1,1 +1,1 @@
-rm /home/pi/printer_data/gcodes/plr -rf
+rm $HOME/printer_data/gcodes/plr -rf
