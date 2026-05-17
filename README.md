@@ -18,7 +18,7 @@ cd YUMI_PLR
 
 ###start-gcode add in your slicer:
 ```bash
-clear_plr
+G31
 save_last_file
 SAVE_VARIABLE VARIABLE=was_interrupted VALUE=True
 ```
@@ -27,7 +27,7 @@ SAVE_VARIABLE VARIABLE=was_interrupted VALUE=True
 ```bash
 SAVE_VARIABLE VARIABLE=was_interrupted VALUE=False
 clear_last_file
-clear_plr
+G31
 ```
 ###Before layer change G-gcode add in your slicer:
 ```bash
