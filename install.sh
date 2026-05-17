@@ -145,6 +145,7 @@ path: ~/YUMI_PLR
 origin: https://github.com/Yumi-Lab/YUMI_PLR.git
 primary_branch: main
 install_script: install.sh
+requirements: requirements.txt
 is_system_service: False
 
 EOF
