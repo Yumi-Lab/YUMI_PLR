@@ -144,7 +144,6 @@ type: git_repo
 path: ~/YUMI_PLR
 origin: https://github.com/Yumi-Lab/YUMI_PLR.git
 primary_branch: main
-install_script: install.sh
 system_dependencies: system_dependencies.json
 is_system_service: False
 managed_services: klipper
