@@ -52,7 +52,8 @@ else
 
   # Copy the project files to the Klipper directory
   cp -f $PROJECT_DIR/plr.cfg $USER_HOME/printer_data/config/ && echo "plr.cfg copied successfully." || echo "Error copying plr.cfg."
-  cp -f $PROJECT_DIR/gcode_shell_command.py $KLIPPER_DIR/klippy/extras/ && echo "gcode_shell_command.py copied successfully." || echo "Error copying gcode_shell_command.py."
+  rm -f "$KLIPPER_DIR/klippy/extras/gcode_shell_command.py"
+  ln -sf "$PROJECT_DIR/gcode_shell_command.py" "$KLIPPER_DIR/klippy/extras/gcode_shell_command.py" && echo "gcode_shell_command.py -> symlinked" || echo "Error symlinking gcode_shell_command.py"
   # Use rsync to copy, overwriting existing files and create the folder if it does not exist
   
   # Make plr.sh & clear_plr.sh executable
